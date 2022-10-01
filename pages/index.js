@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import { onAuthStateChanged, signInWithPopup } from "firebase/auth";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { auth, provider } from "../firebase";
+import { auth, provider, signInWithGoogle } from "../firebase";
 
 export default function Home() {
   const router = useRouter();
@@ -12,14 +12,6 @@ export default function Home() {
       router.push("/feed");
     }
   });
-
-  const signInWithGoogle = () => {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((err) => console.log(err));
-  };
 
   return (
     <div className="grid place-content-center h-screen">
