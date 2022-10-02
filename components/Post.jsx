@@ -1,17 +1,20 @@
 import { Input } from "@mui/material";
 import { OutlinedInput } from "@mui/material";
 import { Avatar } from "@mui/material";
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { auth } from "../firebase";
 
-const Post = () => {
+const Post = ({ handleOpen, open }) => {
   const user = auth.currentUser;
+  const inputRef = useRef(null);
 
   return (
     <div className="bg-white border-2 shadow-sm rounded-md px-4 py-2">
       <div className="flex gap-4 justify-center items-center">
         <Avatar src={user?.photoURL} />
         <OutlinedInput
+          ref={inputRef}
+          onClick={handleOpen}
           className="w-full rounded-full"
           placeholder="Start a post"
         />
