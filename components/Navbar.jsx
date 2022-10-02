@@ -27,7 +27,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="shadow-md h-[9vh] md:px-10 lg:px-28">
+    <div className="shadow-md h-[9vh] md:px-10 lg:px-28 fixed bg-white w-full z-20">
       <div className="flex justify-between max-w-[920px] mx-auto h-full">
         <Link href="/feed">
           <a className="grid place-content-center">
@@ -66,14 +66,15 @@ const Navbar = () => {
           </li>
           <li>
             <div>
-              <div className="w-8 h-8 rounded-full">
+              {/* <div className="w-8 h-8 rounded-full">
                 <Image
                   src={user?.photoURL}
                   width={30}
                   height={30}
                   alt="avatar"
                 />
-              </div>
+              </div> */}
+              <Avatar src={user?.photoURL} sx={{ width: 30, height: 30 }} />
               <div
                 id="avatar"
                 aria-controls={open ? "basic-menu" : undefined}
