@@ -7,7 +7,7 @@ const Sidebar = () => {
 
   return (
     <div className="h-[300vh]">
-      <div className="border-2 p-4 mt-8 w-[15rem] h-[15rem] bg-white shadow-sm rounded-md flex flex-col justify-center items-center gap-4">
+      <div className="border-2 p-4 w-[15rem] h-[15rem] bg-white shadow-sm rounded-md flex flex-col justify-center items-center gap-4">
         <Avatar sx={{ width: 56, height: 56 }} src={user?.photoURL} />
         <h3 className="font-bold">{user?.displayName}</h3>
         <p className="text-gray-600 font-light text-center text-xs">

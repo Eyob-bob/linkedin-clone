@@ -21,10 +21,13 @@ const Feed = () => {
       <Navbar />
       <div className="h-[9vh]"></div>
       <div className="bg-gray-100 min-h-[91vh]">
-        <div className="max-w-[920px] mx-auto flex justify-between">
-          <Sidebar />
-          <Main />
-          <Right />
+        <div>
+          <div className="h-8" />
+          <div className="max-w-[920px] mx-auto flex justify-center gap-8">
+            <Sidebar />
+            <Main />
+            <Right />
+          </div>
         </div>
       </div>
     </>
