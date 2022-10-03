@@ -16,6 +16,7 @@ const Main = () => {
         handleOpen={handleOpen}
         handleClose={handleClose}
       />
+      <div className="h-[2px] bg-gray-500 rounded-full my-4"></div>
       <Feeds />
       <BasicModal
         open={open}

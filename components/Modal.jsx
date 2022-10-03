@@ -3,20 +3,13 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { TextareaAutosize } from "@mui/material";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db, storage } from "../firebase";
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 export default function BasicModal({ open, setOpen, handleClose, handleOpen }) {
   const [post, setPost] = React.useState("");
   const [image, setImage] = React.useState(null);
-  const textAreaRef = React.useRef(null);
   const user = auth.currentUser;
 
   const handleSave = async () => {
@@ -30,8 +23,6 @@ export default function BasicModal({ open, setOpen, handleClose, handleOpen }) {
       uploadTask.on(
         "state_changed",
         (snapshot) => {
-          // Observe state change events such as progress, pause, and resume
-          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           console.log("Upload is " + progress + "% done");
@@ -45,11 +36,9 @@ export default function BasicModal({ open, setOpen, handleClose, handleOpen }) {
           }
         },
         (error) => {
-          // Handle unsuccessful uploads
+          console.log(error);
         },
         () => {
-          // Handle successful uploads on complete
-          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
             const docRef = await addDoc(collection(db, "posts"), {
               postText: post,
@@ -68,12 +57,23 @@ export default function BasicModal({ open, setOpen, handleClose, handleOpen }) {
           });
         }
       );
+    } else {
+      const docRef = await addDoc(collection(db, "posts"), {
+        postText: post,
+        image: null,
+        username: user.displayName,
+        userPhoto: user.photoURL,
+        timestamp: serverTimestamp(),
+      });
+      console.log("Document written with ID: ", docRef.id);
+
+      setPost("");
+      handleClose();
     }
   };
 
   return (
     <div>
-      {/* <Button onClick={handleOpen}>Open modal</Button> */}
       <Modal
         open={open}
         onClose={handleClose}
