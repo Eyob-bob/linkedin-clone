@@ -4,26 +4,72 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { TextareaAutosize } from "@mui/material";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { auth, db, storage } from "../firebase";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
 
 export default function BasicModal({ open, setOpen, handleClose, handleOpen }) {
-  //   const [open, setOpen] = React.useState(false);
-  //   const handleOpen = () => setOpen(true);
-  //   const handleClose = () => setOpen(false);
-
   const [post, setPost] = React.useState("");
+  const [image, setImage] = React.useState(null);
   const textAreaRef = React.useRef(null);
+  const user = auth.currentUser;
+
+  const handleSave = async () => {
+    if (image) {
+      const file = Date.now() + image.name;
+
+      const storageRef = ref(storage, file);
+
+      const uploadTask = uploadBytesResumable(storageRef, image);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          // Observe state change events such as progress, pause, and resume
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+          switch (snapshot.state) {
+            case "paused":
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+          }
+        },
+        (error) => {
+          // Handle unsuccessful uploads
+        },
+        () => {
+          // Handle successful uploads on complete
+          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+            const docRef = await addDoc(collection(db, "posts"), {
+              postText: post,
+              image: downloadURL,
+              username: user.displayName,
+              userPhoto: user.photoURL,
+              timestamp: serverTimestamp(),
+            });
+            console.log("Document written with ID: ", docRef.id);
+
+            setPost("");
+
+            console.log("File available at", downloadURL);
+
+            handleClose();
+          });
+        }
+      );
+    }
+  };
 
   return (
     <div>
@@ -50,13 +96,32 @@ export default function BasicModal({ open, setOpen, handleClose, handleOpen }) {
             }}
             autoFocus={open}
           ></textarea>
-          <Button
-            disabled={post.length <= 0}
-            className="bg-blue-600"
-            variant="contained"
-          >
-            Post
-          </Button>
+
+          <label class="block mb-2 text-sm font-medium" for="file_input">
+            Upload file
+          </label>
+          <input
+            class="block w-full text-sm rounded-lg border cursor-pointer focus:outline-none"
+            aria-describedby="file_input_help"
+            id="file_input"
+            type="file"
+            onChange={(e) => setImage(e.target.files[0])}
+          />
+          <p class="mt-1 text-sm" id="file_input_help">
+            SVG, PNG, JPG or GIF.
+          </p>
+
+          <div className="mt-8 flex justify-between items-center">
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button
+              onClick={handleSave}
+              disabled={post.length <= 0}
+              className="bg-blue-600"
+              variant="contained"
+            >
+              Post
+            </Button>
+          </div>
         </Box>
       </Modal>
     </div>
