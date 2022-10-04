@@ -1,10 +1,7 @@
 import { Button } from "@mui/material";
 import React from "react";
-import { auth } from "../firebase";
 
 const Right = () => {
-  const user = auth.currentUser;
-
   return (
     <div className="lg:hidden">
       <div className="border-2 p-4 w-[15rem] bg-white shadow-sm rounded-md flex flex-col justify-center gap-4">

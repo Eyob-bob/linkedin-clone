@@ -7,11 +7,20 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db, storage } from "../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import CircularProgress from "@mui/material/CircularProgress";
+import { onAuthStateChanged } from "firebase/auth";
 
 export default function BasicModal({ open, setOpen, handleClose, handleOpen }) {
   const [post, setPost] = React.useState("");
   const [image, setImage] = React.useState(null);
-  const user = auth.currentUser;
+  const [user, setUser] = React.useState(null);
+
+  React.useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      }
+    });
+  }, []);
   const [isLoading, setIsLoading] = React.useState(false);
 
   const handleSave = async () => {

@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import { Avatar } from "@mui/material";
-import { IconButton } from "@mui/material";
 import Link from "next/link";
-import { Button } from "@mui/material";
 import { Menu } from "@mui/material";
 import { MenuItem } from "@mui/material";
 import PeopleIcon from "@mui/icons-material/People";
@@ -17,8 +15,19 @@ import Image from "next/image";
 
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const user = auth.currentUser;
+
   const open = Boolean(anchorEl);
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      }
+    });
+  }, []);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };

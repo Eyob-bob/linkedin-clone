@@ -1,4 +1,3 @@
-import { OutlinedInput } from "@mui/material";
 import { Button } from "@mui/material";
 import { Avatar } from "@mui/material";
 import React, { useState, useEffect } from "react";
@@ -9,9 +8,18 @@ import { Share } from "@mui/icons-material";
 import { Send } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Feeds = ({ handleOpen }) => {
-  const user = auth.currentUser;
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      }
+    });
+  }, []);
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 

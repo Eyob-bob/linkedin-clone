@@ -1,10 +1,20 @@
 import { OutlinedInput } from "@mui/material";
 import { Avatar } from "@mui/material";
-import React, { useRef, useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import React, { useRef, useEffect, useState } from "react";
 import { auth } from "../firebase";
 
 const Post = ({ handleOpen, open }) => {
-  const user = auth.currentUser;
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      }
+    });
+  }, []);
+
   const inputRef = useRef(null);
 
   return (
