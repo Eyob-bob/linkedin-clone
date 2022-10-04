@@ -26,7 +26,7 @@ const Feed = () => {
       </Head>
       <Navbar />
       <div className="h-[9vh]"></div>
-      <div className="bg-gray-100 min-h-[91vh]">
+      <div className="bg-gray-100 min-h-[91vh] pb-8">
         <div>
           <div className="h-8" />
           <div className="max-w-[1050px] lg:px-8 md:px-8 mx-auto flex justify-center gap-8">
