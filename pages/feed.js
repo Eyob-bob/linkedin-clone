@@ -1,6 +1,7 @@
 import { onAuthStateChanged, signOut } from "firebase/auth";
+import Head from "next/head";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import Main from "../components/Main";
 import Navbar from "../components/Navbar";
 import Right from "../components/Right";
@@ -10,20 +11,25 @@ import { auth } from "../firebase";
 const Feed = () => {
   const router = useRouter();
 
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      router.push("/");
-    }
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        router.push("/");
+      }
+    });
   });
 
   return (
     <>
+      <Head>
+        <title>Feed | Linkedin</title>
+      </Head>
       <Navbar />
       <div className="h-[9vh]"></div>
       <div className="bg-gray-100 min-h-[91vh]">
         <div>
           <div className="h-8" />
-          <div className="max-w-[920px] mx-auto flex justify-center gap-8">
+          <div className="max-w-[1050px] mx-auto flex justify-center gap-8">
             <Sidebar />
             <Main />
             <Right />

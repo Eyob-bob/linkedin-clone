@@ -7,10 +7,12 @@ import { auth, provider, signInWithGoogle } from "../firebase";
 export default function Home() {
   const router = useRouter();
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      router.push("/feed");
-    }
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        router.push("/feed");
+      }
+    });
   });
 
   return (

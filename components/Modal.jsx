@@ -6,13 +6,16 @@ import Modal from "@mui/material/Modal";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db, storage } from "../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function BasicModal({ open, setOpen, handleClose, handleOpen }) {
   const [post, setPost] = React.useState("");
   const [image, setImage] = React.useState(null);
   const user = auth.currentUser;
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const handleSave = async () => {
+    setIsLoading(true);
     if (image) {
       const file = Date.now() + image.name;
 
@@ -54,6 +57,7 @@ export default function BasicModal({ open, setOpen, handleClose, handleOpen }) {
             console.log("File available at", downloadURL);
 
             handleClose();
+            setIsLoading(false);
           });
         }
       );
@@ -69,6 +73,7 @@ export default function BasicModal({ open, setOpen, handleClose, handleOpen }) {
 
       setPost("");
       handleClose();
+      setIsLoading(false);
     }
   };
 
@@ -97,22 +102,26 @@ export default function BasicModal({ open, setOpen, handleClose, handleOpen }) {
             autoFocus={open}
           ></textarea>
 
-          <label class="block mb-2 text-sm font-medium" for="file_input">
+          <label
+            className="block mb-2 text-sm font-medium"
+            htmlFor="file_input"
+          >
             Upload file
           </label>
           <input
-            class="block w-full text-sm rounded-lg border cursor-pointer focus:outline-none"
+            className="block w-full text-sm rounded-lg border cursor-pointer focus:outline-none"
             aria-describedby="file_input_help"
             id="file_input"
             type="file"
             onChange={(e) => setImage(e.target.files[0])}
           />
-          <p class="mt-1 text-sm" id="file_input_help">
+          <p className="mt-1 text-sm" id="file_input_help">
             SVG, PNG, JPG or GIF.
           </p>
 
           <div className="mt-8 flex justify-between items-center">
             <Button onClick={handleClose}>Cancel</Button>
+            {isLoading && <CircularProgress />}
             <Button
               onClick={handleSave}
               disabled={post.length <= 0}

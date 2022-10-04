@@ -13,12 +13,14 @@ import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 const Feeds = ({ handleOpen }) => {
   const user = auth.currentUser;
   const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const unsub = onSnapshot(
       query(collection(db, "posts"), orderBy("timestamp", "desc")),
       (querySnapshot) => {
         setData(querySnapshot.docs);
+        setIsLoading(false);
       }
     );
 
@@ -27,11 +29,23 @@ const Feeds = ({ handleOpen }) => {
     };
   }, []);
 
+  if (isLoading)
+    return (
+      <div className="w-full grid place-content-center">
+        <img src="images/loading.svg" alt="loading indicator" />
+      </div>
+    );
+
+  if (data?.length === 0) return <p>There is no data</p>;
+
   return (
     <>
       {data?.map((doc) => {
         return (
-          <div className="bg-white border-2 shadow-sm rounded-md px-4 py-2">
+          <div
+            key={doc.data().timestamp}
+            className="bg-white border-2 shadow-sm rounded-md px-4 py-2"
+          >
             <div className="flex justify-between items-center ">
               <div className="flex items-center justify-center gap-2">
                 <Avatar
