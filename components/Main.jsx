@@ -9,7 +9,7 @@ const Main = () => {
   const handleClose = () => setOpen(false);
 
   return (
-    <div className="flex-1">
+    <div className="sm:w-[50%] 2xl:w-[400px]">
       <Post
         open={open}
         setOpen={setOpen}

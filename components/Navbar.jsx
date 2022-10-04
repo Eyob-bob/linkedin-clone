@@ -27,7 +27,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="shadow-md h-[9vh] md:px-10 lg:px-28 fixed bg-white w-full z-20">
+    <div className="shadow-md h-[9vh] xs:px-1 lg:px-10 fixed bg-white w-full z-20">
       <div className="flex justify-between max-w-[920px] mx-auto h-full">
         <Link href="/feed">
           <a className="grid place-content-center">
@@ -36,32 +36,32 @@ const Navbar = () => {
         </Link>
 
         <ul className="flex items-center gap-8 h-full">
-          <li className="grid place-content-center h-full border-b-black border-b-2 px-2">
+          <li className="grid place-content-center h-full border-b-black border-b-2 px-2 xs:p-0">
             <div className="flex flex-col justify-center items-center">
-              <HomeIcon /> <p>Home</p>
+              <HomeIcon /> <p className="md:hidden">Home</p>
             </div>
           </li>
 
-          <li className="grid place-content-center h-full px-2">
+          <li className="grid place-content-center h-full px-2 xs:p-0">
             <div className="flex flex-col justify-center items-center">
-              <PeopleIcon /> <p>My Network</p>
+              <PeopleIcon /> <p className="md:hidden">My Network</p>
             </div>
           </li>
 
-          <li className="grid place-content-center h-full px-2">
+          <li className="grid place-content-center h-full px-2 xs:p-0">
             <div className="flex flex-col justify-center items-center">
-              <WorkIcon /> <p>Jobs</p>
+              <WorkIcon /> <p className="md:hidden">Jobs</p>
             </div>
           </li>
 
-          <li className="grid place-content-center h-full px-2">
+          <li className="grid place-content-center h-full px-2 xs:p-0">
             <div className="flex flex-col justify-center items-center">
-              <CommentIcon /> <p>Messaging</p>
+              <CommentIcon /> <p className="md:hidden">Messaging</p>
             </div>
           </li>
-          <li className="grid place-content-center h-full px-2">
+          <li className="grid place-content-center h-full px-2 xs:p-0">
             <div className="flex flex-col justify-center items-center">
-              <NotificationsIcon /> <p>Notifications</p>
+              <NotificationsIcon /> <p className="md:hidden">Notifications</p>
             </div>
           </li>
           <li>
@@ -74,7 +74,11 @@ const Navbar = () => {
                   alt="avatar"
                 />
               </div> */}
-              <Avatar src={user?.photoURL} sx={{ width: 30, height: 30 }} />
+              <Avatar
+                src={user?.photoURL}
+                sx={{ width: 30, height: 30 }}
+                className="xs:w-4 xs:h-4"
+              />
               <div
                 id="avatar"
                 aria-controls={open ? "basic-menu" : undefined}

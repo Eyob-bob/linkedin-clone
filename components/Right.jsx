@@ -1,5 +1,4 @@
 import { Button } from "@mui/material";
-import { Avatar } from "@mui/material";
 import React from "react";
 import { auth } from "../firebase";
 
@@ -7,7 +6,7 @@ const Right = () => {
   const user = auth.currentUser;
 
   return (
-    <div>
+    <div className="lg:hidden">
       <div className="border-2 p-4 w-[15rem] bg-white shadow-sm rounded-md flex flex-col justify-center gap-4">
         <h3 className="font-bold">Added To your Feed</h3>
         <p className="text-gray-600 font-light text-xs">
@@ -33,7 +32,7 @@ const Right = () => {
         <p>more</p>
       </div>
       <p className="mt-4 sticky top-[20vh]">
-        Linkedin inc. @{new Date().getFullYear()}
+        Linkedin Corporation. &copy; {new Date().getFullYear()}
       </p>
     </div>
   );

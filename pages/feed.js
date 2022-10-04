@@ -29,7 +29,7 @@ const Feed = () => {
       <div className="bg-gray-100 min-h-[91vh]">
         <div>
           <div className="h-8" />
-          <div className="max-w-[1050px] mx-auto flex justify-center gap-8">
+          <div className="max-w-[1050px] lg:px-8 md:px-8 mx-auto flex justify-center gap-8">
             <Sidebar />
             <Main />
             <Right />
