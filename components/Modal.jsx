@@ -16,7 +16,15 @@ export default function BasicModal({ open, setOpen, handleClose, handleOpen }) {
 
   const handleSave = async () => {
     setIsLoading(true);
-    if (image) {
+
+    if (
+      image &&
+      (image.type == "image/jpg" ||
+        image.type == "image/png" ||
+        image.type == "image/jpeg" ||
+        image.type == "image/gif" ||
+        image.type == "image/svg")
+    ) {
       const file = Date.now() + image.name;
 
       const storageRef = ref(storage, file);
